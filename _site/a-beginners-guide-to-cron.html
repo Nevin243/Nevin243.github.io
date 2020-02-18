@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>A beginners guide to Cron &#8211; Marc Nevin</title>
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A quick starter to automating your scripts">
+    <meta name="robots" content="all">
+    <meta name="author" content="Marc Nevin">
+    <meta name="keywords" content="beginners, shell, scripting, productivity">
+    <link rel="canonical" href="http://localhost:4000/a-beginners-guide-to-cron">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Marc Nevin" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css?202002091735" type="text/css">
+
+    <!-- Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="A beginners guide to Cron">
+    <meta property="og:description" content="Marc's musings, blogs and technology rambling captured in one neat place.">
+    <meta property="og:url" content="http://localhost:4000/a-beginners-guide-to-cron">
+    <meta property="og:site_name" content="Marc Nevin">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@M_Nevin" />
+        <meta name="twitter:creator" content="@M_Nevin" />
+    
+    <meta name="twitter:title" content="A beginners guide to Cron" />
+    <meta name="twitter:description" content="A quick starter to automating your scripts" />
+    <meta name="twitter:url" content="http://localhost:4000/a-beginners-guide-to-cron" />
+    
+
+    <!-- Icons -->
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-157875972-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<body class="site animated fade-in-down">
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="/" class="site-title">Marc Nevin</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a class="nav-link" href="/about/">About</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>A beginners guide to Cron</h1>
+  <span class="post-meta">May 6, 2019 |</span>
+  
+  <span class="post-meta small">
+  
+    6 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p>Need to back-up on a Linux server monthly? Automate some scripting on a Mac every few days? or run some hacky code on your Raspberry Pi every hour?</p>
+
+<p>Cron jobs are here to make it easier.</p>
+
+<hr />
+
+<p>Recently in work, I’ve been automating some regular data capture using a really bloated approach until I remembered about Cron.</p>
+
+<p>The reminder of how useful it can be has led to using it on a variety of smaller projects I’ve been working on such as some data collection across a few Raspberry Pis.</p>
+
+<p>Using Cron has reminded me of how much utility it has and how sometimes how it is overlooked. So, this post is aimed at helping beginners, those new to UNIX-like environments or someone a bit rusty, start using Cron.</p>
+
+<p>So first;</p>
+
+<h1 id="what-is-cron">What is Cron?</h1>
+<p>Cron’s name comes from the Greek word for time; Chronus, And it’s all about time with Cron, it’s a time-based job scheduler for Unix-like OS’s. Meaning it allows us to schedule jobs to run at fixed times, dates, or intervals continuously, these jobs can be anything as long as it’s one line; from a simple command to a complex script.</p>
+
+<p>Often these jobs are used for system maintenance, automation or admin tasks, used for taking the onus off the user to remember and enabling it to run with no intervention.</p>
+
+<p>Sounds useful, how do we start?</p>
+
+<h1 id="creating-a-cron-job">Creating a Cron job</h1>
+<p>It all happens on the command line, so starting there and open the Cron table, or crontab. It’s where we can see, edit and create new Cron jobs, this can be accessed by typing this;</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>crontab <span class="nt">-e</span>
+</code></pre></div></div>
+<p>If you’ve never used Cron before it’ll open an empty file for you to enter your commands.</p>
+
+<p>Note: It may ask you to set a default editor, if you haven’t already, to edit the file containing the table, this can any command line editor such as Vim or nano.</p>
+
+<h2 id="cron-format">Cron Format</h2>
+<p>Cron follows a standard format, 5 values then your command, minutes, hours, day, month and day of the week. For example;</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>5 7 <span class="k">*</span> <span class="k">*</span> <span class="k">*</span> /home/test.sh
+</code></pre></div></div>
+<p>This would run a bash script, test.sh, at 5 past 7, every day.</p>
+
+<p>A good visual used a lot for explaining what each of these 5 values covers, is this one;</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌───────────── minute <span class="o">(</span>0 - 59<span class="o">)</span>
+│ ┌───────────── hour <span class="o">(</span>0 - 23<span class="o">)</span>
+│ │ ┌───────────── day of the month <span class="o">(</span>1 - 31<span class="o">)</span>
+│ │ │ ┌───────────── month <span class="o">(</span>1 - 12<span class="o">)</span>
+│ │ │ │ ┌───────────── day of the week <span class="o">(</span>0 - 6<span class="o">)</span> <span class="o">(</span>Sunday to Saturday, 7 is also Sunday on some systems<span class="o">)</span>
+│ │ │ │ │                                   
+│ │ │ │ │
+<span class="k">*</span> <span class="k">*</span> <span class="k">*</span> <span class="k">*</span> <span class="k">*</span> <span class="nb">command </span>to execute
+</code></pre></div></div>
+
+<p>Some examples would be ` 0 * * * *<code class="highlighter-rouge"> would be every minute, </code> * * * * *<code class="highlighter-rouge"> would be every second or </code>0 0 * * *` the start of every month. An asterisk means the same as it does in most applications, first to the last inclusive, so everything.</p>
+
+<p>But there’s more you can do though than picking one value;</p>
+
+<h4 id="slash">Slash</h4>
+<p>You can use ‘/’ to indicate steps, so <code class="highlighter-rouge">*/10 * * * *</code> would indicate every 10 minutes.</p>
+
+<h4 id="hyphen">Hyphen</h4>
+<p>Another is ‘-‘ can be used for inclusive ranges so <code class="highlighter-rouge">0 0 1-6 * *</code> would be the start of every month for the first 6 months.</p>
+
+<h4 id="comma">Comma</h4>
+<p>The last one I’ll talk about for now is ‘,’ which can be used to create lists, for example, <code class="highlighter-rouge">0 * * * MON,WED,FRI</code> which would run every minuite on Mondays, Wednesdays and Fridays.</p>
+
+<p>There are more options such as using some characters but these aren’t standard across most platforms.</p>
+
+<h4 id="keywords">Keywords</h4>
+<p>Above we also just used some keywords, Cron has some functionality to understand keyphrases like shorthand for days and months. So for the day of week field, you can use MON-SUN. And for the month field, you can use JAN-DEC.</p>
+
+<p>On a lot of systems there some keywords that can be used for some heavily used times, here’s a list of some of the most common ones;</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@reboot        Run once at startup
+@yearly        Run once a year <span class="o">(</span>0 0 1 1 <span class="k">*</span><span class="o">)</span>
+@annually      same as @yearly
+@monthly       Run once a month <span class="o">(</span>0 0 1 <span class="k">*</span> <span class="k">*</span><span class="o">)</span>
+@weekly        Run once a week <span class="o">(</span>0 0 <span class="k">*</span> <span class="k">*</span> 0<span class="o">)</span>
+@daily         Run once a day <span class="o">(</span>0 0 <span class="k">*</span> <span class="k">*</span> <span class="k">*</span><span class="o">)</span>
+@midnight      <span class="o">(</span>same as @daily<span class="o">)</span>
+@hourly        Run once an hour <span class="o">(</span>0 <span class="k">*</span> <span class="k">*</span> <span class="k">*</span> <span class="k">*</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>To make this easier there’s a number of fairly good online <a href="https://crontab-generator.org/">crontab generators</a>, to help build your job in a more visual way.</p>
+
+<h2 id="youve-got-mail">You’ve got mail?</h2>
+<p>At this point, it’s worth mentioning that you’re going to get some mail. Every-time a Cron job runs, so maybe once a minute, it uses SMTP to send you an email notification to your terminal. You’ll see a prompt next time you open your terminal saying you’ve got mail, running <code class="highlighter-rouge">mail</code> will allow you to see these and from there you can <code class="highlighter-rouge">del *</code> to delete all of the mail…</p>
+
+<p>Alternatively, if you add this to the start of the crontab</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">MAILTO</span><span class="o">=</span><span class="s2">""</span>
+</code></pre></div></div>
+<p>It’ll prevent it from sending your terminal mail.</p>
+
+<h2 id="checking-your-job">Checking your Job</h2>
+<p>Now if you’ve created a job, you can see our Cron table, which will contain it by running this;</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>crontab <span class="nt">-l</span>
+</code></pre></div></div>
+
+<p>Which will allow you to see your job and any others you’ve set, <code class="highlighter-rouge">-e</code> will enable you to go back and edit your job if you want to.</p>
+
+<h2 id="removing-a-job">Removing a job</h2>
+<p>To remove your crontab to stop all your jobs you can simply run this;</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>crontab <span class="nt">-r</span>
+</code></pre></div></div>
+<p>And they’ll all be gone, or you can just edit the crontab and remove individual ones that you don’t want.</p>
+
+<h1 id="pitfalls">Pitfalls</h1>
+<p>Although Cron seems fairly straightforward, it’s also full of gotchas, speaking to anyone who’s worked with Cron jobs usually leads to some story about a misconfigured job that’s been a pain to resolve or lead to some catastrophe. So when using them you can regularly find yourself getting tripped up over simple things or some of the odder aspects of the tool.</p>
+
+<p>Some of the most common traps come from:</p>
+<ul>
+  <li>Wrong Crontab notation</li>
+  <li>Permission problems</li>
+  <li>Environment variables</li>
+</ul>
+
+<p>This Stack Exchange <a href="https://askubuntu.com/questions/23009/why-crontab-scripts-are-not-working">thread</a> covers a lot of the most common ones and is a really valuable resource for troubleshooting your issues.</p>
+
+<hr />
+
+<p>Overall, Cron is a great tool when used in the right place but it’s not a one-stop shop for your scheduling needs. Remember to pick the right tool for the job but if its Cron, hopefully, this guide will set you off in the right path!</p>
+
+</article>
+
+
+  <div class="share-page">
+  <div class="share-links">
+    Share:
+
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=A+beginners+guide+to+Cron&amp;url=http%3A%2F%2Flocalhost%3A4000%2Fa-beginners-guide-to-cron" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=http%3A%2F%2Flocalhost%3A4000%2Fa-beginners-guide-to-cron&amp;title=A+beginners+guide+to+Cron" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=http%3A%2F%2Flocalhost%3A4000%2Fa-beginners-guide-to-cron&amp;title=A+beginners+guide+to+Cron" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=http%3A%2F%2Flocalhost%3A4000%2Fa-beginners-guide-to-cron&amp;t=A+beginners+guide+to+Cron" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  <ul class="related-posts">
+    
+    <li>
+      <a href="/driven-by-reinforcement-learning" class="post-link">
+          Driven by Reinforcement Learning
+      </a>
+    </li>
+    
+  </ul>
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <div class="left">
+      <small>
+        &copy; 2020 Marc Nevin
+      </small>
+    </div>
+    
+      <div class="social-icons right">
+  
+    <a class="fa fa-linkedin" href="https://www.linkedin.com/in/marcnevin" target="_blank"></a>
+    
+  
+    <a class="fa fa-github" href="https://github.com/Nevin243" target="_blank"></a>
+  
+  
+    <a class="fa fa-twitter" href="https://twitter.com/M_Nevin" target="_blank"></a>
+  
+  <!---->
+  <a href="https://dev.to/m_nevin" target="_blank">
+      <i class="fab fa-dev"></i>
+  </a>
+  <!---->
+  
+  <a class="fa fa-rss" href="/feed.xml" target="_blank"></a>
+</div>
+<div class="clearfix"></div>
+
+    
+  </div>
+</footer>
+<script type="text/javascript">
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js")
+    }
+</script>
+
+</body>
+</html>
