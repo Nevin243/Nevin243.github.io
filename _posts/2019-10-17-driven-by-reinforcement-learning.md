@@ -156,8 +156,7 @@ Both sets of campers really enjoyed the events and got super competitive with it
 # Tips & Tricks
 
 So from running both camps and speaking to the team we definitely got some tips we want to pass on to you;
-This first once might seem obvious for someone who’s used to machine learning concepts, but you need to build your models to generalise — be wary of convergence;
-{% youtube Mbm-Lv5Un3Q %}
+This first once might seem obvious for someone who’s used to machine learning concepts, but you need to build your models to generalise — be wary of con[vergence](https://www.youtube.com/watch?v=Mbm-Lv5Un3Q).
 
 Training time is an important thing to keep in mind with convergence, training for a maximum of 8 hours, cloning it, and running it again doesn’t normally lead to an effective model. Typically you see much more success with smaller training increments of 1–2 hours before cloning and tweaking the hyperparameters.
 
