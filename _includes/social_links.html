@@ -8,11 +8,11 @@
   {% if site.twitter_username %}
     <a class="fa fa-twitter" href="https://twitter.com/{{ site.twitter_username }}" target="_blank"></a>
   {% endif %}
-  <!--{% if site.dev_username %}-->
+  {% if site.dev_username %}
   <a href="https://dev.to/{{ site.dev_username }}" target="_blank">
       <i class="fab fa-dev"></i>
   </a>
-  <!--{% endif %}-->
+  {% endif %}
   {% if site.email %}
     <a class="fa fa-envelope" href="mailto:{{ site.email }}"></a>
   {% endif %}
