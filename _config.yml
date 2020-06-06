@@ -10,6 +10,7 @@ header_pages:
  - about.md
 
 google_analytics: UA-157875972-1
+monetization: $pay.stronghold.co/1a1677b5f3c522c475590b873c880ef0dc2
 
 # Optional features
 animated:             true
